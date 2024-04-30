@@ -1156,6 +1156,13 @@
   resolved "https://registry.npmmirror.com/@plasmohq/init/-/init-0.7.0.tgz"
   integrity sha512-P75g48dqOGneJ+n0AcqnLE/TYflcaPc3B7h6EopnCBBYUDnCNBMwYmKAkaf5pnhsEB0ybPS6TU1C2DTGfqaW7A==
 
+"@plasmohq/messaging@^0.6.2":
+  version "0.6.2"
+  resolved "https://registry.npmmirror.com/@plasmohq/messaging/-/messaging-0.6.2.tgz"
+  integrity sha512-CGfcvfVE0wsN/Y/i/jV0nwjkwh2gBCEujZFhLoxJ12N0ScoP3JVEIvUxJSFsAD4ylBQ8IjD2FyjQozwiSxWc4Q==
+  dependencies:
+    nanoid "5.0.3"
+
 "@plasmohq/parcel-bundler@0.5.5":
   version "0.5.5"
   resolved "https://registry.npmmirror.com/@plasmohq/parcel-bundler/-/parcel-bundler-0.5.5.tgz"
@@ -1624,13 +1631,6 @@
   resolved "https://registry.npmmirror.com/@types/http-cache-semantics/-/http-cache-semantics-4.0.4.tgz"
   integrity sha512-1m0bIFVc7eJWyve9S0RnuRgcQqF/Xd5QsUZAZeQFr1Q3/p9JWoQQEqmVy+DPTNpGXwhgIetAoYF8JSc33q29QA==
 
-"@types/jquery@^3.5.29":
-  version "3.5.29"
-  resolved "https://registry.npmmirror.com/@types/jquery/-/jquery-3.5.29.tgz"
-  integrity sha512-oXQQC9X9MOPRrMhPHHOsXqeQDnWeCDT3PelUIg/Oy8FAbzSZtFHRjc7IpbfFVmpLtJ+UOoywpRsuO5Jxjybyeg==
-  dependencies:
-    "@types/sizzle" "*"
-
 "@types/json-schema@^7.0.9":
   version "7.0.15"
   resolved "https://registry.npmmirror.com/@types/json-schema/-/json-schema-7.0.15.tgz"
@@ -1673,11 +1673,6 @@
   version "0.23.0"
   resolved "https://registry.npmmirror.com/@types/scheduler/-/scheduler-0.23.0.tgz"
   integrity sha512-YIoDCTH3Af6XM5VuwGG/QL/CJqga1Zm3NkU3HZ4ZHK2fRMPYP1VczsTUqtsf43PH/iJNVlPHAo2oWX7BSdB2Hw==
-
-"@types/sizzle@*":
-  version "2.3.8"
-  resolved "https://registry.npmmirror.com/@types/sizzle/-/sizzle-2.3.8.tgz"
-  integrity sha512-0vWLNK2D5MT9dg0iOo8GlKguPAU02QjmZitPEsXRuJXU/OGIOt9vT9Fc26wtYuavLxtO45v9PGleoL9Z0k1LHg==
 
 "@vue/compiler-core@3.3.4":
   version "3.3.4"
@@ -2992,6 +2987,11 @@ inquirer@9.2.12:
     strip-ansi "^6.0.1"
     wrap-ansi "^6.2.0"
 
+install@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.npmmirror.com/install/-/install-0.13.0.tgz"
+  integrity sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==
+
 is-arrayish@^0.2.1:
   version "0.2.1"
   resolved "https://registry.npmmirror.com/is-arrayish/-/is-arrayish-0.2.1.tgz"
@@ -3101,11 +3101,6 @@ joycon@^3.0.1:
   version "3.1.1"
   resolved "https://registry.npmmirror.com/joycon/-/joycon-3.1.1.tgz"
   integrity sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==
-
-jQuery@^1.7.4:
-  version "1.7.4"
-  resolved "https://registry.npmmirror.com/jQuery/-/jQuery-1.7.4.tgz"
-  integrity sha512-hf/hWBnkFhu4FzP96tBjZNPF9qTcUaOKFA8hpVJX0Cb/892JefRzoVGCe/vkmry/pOhZiK6VnQvnuV8CoHf1rA==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -3491,6 +3486,11 @@ nanoid@^3.3.7:
   version "3.3.7"
   resolved "https://registry.npmmirror.com/nanoid/-/nanoid-3.3.7.tgz"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
+
+nanoid@5.0.3:
+  version "5.0.3"
+  resolved "https://registry.npmmirror.com/nanoid/-/nanoid-5.0.3.tgz"
+  integrity sha512-I7X2b22cxA4LIHXPSqbBCEQSL+1wv8TuoefejsX4HFWyC6jc5JG7CEaxOltiKjc1M+YCS2YkrZZcj4+dytw9GA==
 
 napi-build-utils@^1.0.1:
   version "1.0.2"
@@ -3895,7 +3895,7 @@ react-refresh@0.14.0:
   resolved "https://registry.npmmirror.com/react-refresh/-/react-refresh-0.14.0.tgz"
   integrity sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==
 
-react@^18.2.0, react@18.2.0:
+"react@^16.8.6 || ^17 || ^18", react@^18.2.0, react@18.2.0:
   version "18.2.0"
   resolved "https://registry.npmmirror.com/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
@@ -4506,6 +4506,11 @@ typescript@5.2.2:
   version "5.2.2"
   resolved "https://registry.npmmirror.com/typescript/-/typescript-5.2.2.tgz"
   integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
+
+umbrellajs@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.npmmirror.com/umbrellajs/-/umbrellajs-3.3.3.tgz"
+  integrity sha512-VrKXEENk705mAVW5N3kxk73iuKeQifuacdmCDfOR6MZdf/AP3H/NQ46HqH32RRCAF7WfVv6t5ziFrvXA1nbHiw==
 
 undici-types@~5.26.4:
   version "5.26.5"
