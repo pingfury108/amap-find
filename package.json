@@ -12,8 +12,9 @@
   "dependencies": {
     "@plasmohq/messaging": "^0.6.2",
     "install": "^0.13.0",
-    "plasmo": "0.86.1",
+    "plasmo": "^0.86.2",
     "react": "18.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.2.0",
     "umbrellajs": "^3.3.3"
   },
@@ -22,6 +23,7 @@
     "@types/chrome": "0.0.258",
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
+    "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "18.2.18",
     "prettier": "3.2.4",
     "typescript": "5.3.3"
