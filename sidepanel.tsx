@@ -12,10 +12,10 @@ const storage_key = "place-data";
 function PhoneItem({ phone }) {
   const handleCopy = () => {
   };
-  const phones = phone.trim().split(/\s+/);
+  const phones = phone.replace(";", " ").trim().split(/\s+/);
 
   if (phones.length > 0) {
-    return phones.map(p => <div className="grid grid-cols-3">
+    return phones.map(p => <div className="d-phone grid grid-cols-3">
       <div className="text-lg phone col-span-2">{p}</div>
       <div className="col-span-1 text-base">
         <CopyToClipboard text={p}>
@@ -57,7 +57,7 @@ function IndexSidePanel() {
           padding: 16
         }}>
         <div className="np text-base">
-          <div className="grid grid-cols-3">
+          <div className="d-name grid grid-cols-3">
             <div className="col-span-2">
               {data.name}
             </div>

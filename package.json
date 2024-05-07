@@ -34,7 +34,8 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://amap.com/*"
+      "https://amap.com/*",
+      "https://map.qq.com/*"
     ]
   }
 }
