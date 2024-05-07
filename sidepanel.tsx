@@ -12,7 +12,7 @@ const storage_key = "place-data";
 function PhoneItem({ phone }) {
   const handleCopy = () => {
   };
-  const phones = phone.replace(";", " ").trim().split(/\s+/);
+  const phones = phone.replace("(", "").replace(")", "-").replace(";", " ").replace(",", " ").trim().split(/\s+/);
 
   if (phones.length > 0) {
     return phones.map(p => <div className="d-phone grid grid-cols-3">
@@ -40,7 +40,7 @@ function IndexSidePanel() {
       place.push(req.data);
       var place_2 = place.filter((item, index, self) =>
         index === self.findIndex((t) => (
-          t.id === item.id
+          t.name === item.name
         ))
       );
       storage.set(storage_key, place_2);

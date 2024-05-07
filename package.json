@@ -35,7 +35,8 @@
   "manifest": {
     "host_permissions": [
       "https://amap.com/*",
-      "https://map.qq.com/*"
+      "https://map.qq.com/*",
+      "https://map.baidu.com/*"
     ]
   }
 }

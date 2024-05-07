@@ -4,7 +4,7 @@ import u from "umbrellajs";
 import { sendToBackground } from "@plasmohq/messaging";
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://amap.com/*", "https://map.qq.com/*"],
+  matches: ["https://amap.com/*", "https://map.qq.com/*", "https://map.baidu.com/*"],
   all_frames: true
 }
 
@@ -50,22 +50,36 @@ function parsePlaceQQmap() {
       break;
   }
 
-  console.log(data)
+  return data
+}
+
+function parsePlaceBaidumap() {
+  const placebox = u(".card")
+  const data = {
+    id: placebox.attr("data-id"),
+    name: placebox.find(".generalHead-left-header-title").find("span").text(),
+    addr: placebox.find(".generalInfo-address-text").text(),
+    phone: placebox.find(".generalInfo-telnum-text").text(),
+  }
+
   return data
 }
 
 function sendPlace() {
   switch (true) {
     case /^.*\amap.com$/.test(window.location.hostname):
-      console.log(window.location.hostname, "is amap");
       sendToBackground({
         action: "place", data: parsePlaceAmap()
       })
       break;
     case /^.*\map.qq.com$/.test(window.location.hostname):
-      console.log(window.location.hostname, "is qq map");
       sendToBackground({
         action: "place", data: parsePlaceQQmap()
+      })
+      break;
+    case /^.*\map.baidu.com$/.test(window.location.hostname):
+      sendToBackground({
+        action: "place", data: parsePlaceBaidumap()
       })
       break;
   }
