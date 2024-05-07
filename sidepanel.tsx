@@ -15,11 +15,13 @@ function PhoneItem({ phone }) {
   const phones = phone.trim().split(/\s+/);
 
   if (phones.length > 0) {
-    return phones.map(p => <div className="grid grid-cols-2 gap-3">
-      <div className="text-lg phone">{p}</div>
-      <CopyToClipboard text={p}>
-        <button onClick={handleCopy} className="border text-lg rounded-full text-blue-500">点击复制电话</button>
-      </CopyToClipboard>
+    return phones.map(p => <div className="grid grid-cols-3">
+      <div className="text-lg phone col-span-2">{p}</div>
+      <div className="col-span-1 text-base">
+        <CopyToClipboard text={p}>
+          <button onClick={handleCopy} className="border rounded-full text-blue-500">点击复制电话</button>
+        </CopyToClipboard>
+      </div>
     </div>);
   } else {
     return (<></>)
@@ -34,7 +36,7 @@ function IndexSidePanel() {
     console.log(place_ss, "ffff");
     if (place_ss) {
       //var place: Array<any> = JSON.parse(place_ss);
-      var place: Array<any> = place_ss;
+      var place = [].concat(place_ss);
       place.push(req.data);
       var place_2 = place.filter((item, index, self) =>
         index === self.findIndex((t) => (
@@ -54,9 +56,18 @@ function IndexSidePanel() {
         style={{
           padding: 16
         }}>
-        <div className="nd text-base">
-          <div mt-4>{data.name}</div>
-          <div mt-4>{data.addr}</div>
+        <div className="np text-base">
+          <div className="grid grid-cols-3">
+            <div className="col-span-2">
+              {data.name}
+            </div>
+            <div className="col-span-1">
+              <CopyToClipboard text={data.name}>
+                <button className="border rounded-full text-blue-500">点击复制名称</button>
+              </CopyToClipboard>
+            </div>
+          </div>
+          <div>{data.addr}</div>
         </div>
         <div className="container mt-5">
           <PhoneItem phone={data.phone} />
