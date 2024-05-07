@@ -15,7 +15,7 @@ function PhoneItem({ phone }) {
   const phones = phone.replace("(", "").replace(")", "-").replace(";", " ").replace(",", " ").trim().split(/\s+/);
 
   if (phones.length > 0) {
-    return phones.map(p => <div className="d-phone grid grid-cols-3">
+    return phones.map(p => <div key="phone" className="d-phone grid grid-cols-3">
       <div className="text-lg phone col-span-2">{p}</div>
       <div className="col-span-1 text-base">
         <CopyToClipboard text={p}>

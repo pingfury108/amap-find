@@ -17,6 +17,7 @@ function parsePlaceAmap() {
     addr: place.find(".feedaddr").text(),
     phone: place.find(".feedphone").text(),
   }
+  console.log(data)
 
   return data
 }
@@ -49,6 +50,7 @@ function parsePlaceQQmap() {
       data.addr = text[text.length - 1]
       break;
   }
+  console.log(data)
 
   return data
 }
@@ -61,23 +63,28 @@ function parsePlaceBaidumap() {
     addr: placebox.find(".generalInfo-address-text").text(),
     phone: placebox.find(".generalInfo-telnum-text").text(),
   }
+  console.log(data)
 
   return data
 }
 
 function sendPlace() {
+  console.log(window.location.hostname);
   switch (true) {
     case /^.*\amap.com$/.test(window.location.hostname):
+      console.log("amap")
       sendToBackground({
         action: "place", data: parsePlaceAmap()
       })
       break;
     case /^.*\map.qq.com$/.test(window.location.hostname):
+      console.log("map qq")
       sendToBackground({
         action: "place", data: parsePlaceQQmap()
       })
       break;
     case /^.*\map.baidu.com$/.test(window.location.hostname):
+      console.log("map baidu")
       sendToBackground({
         action: "place", data: parsePlaceBaidumap()
       })
