@@ -37,6 +37,11 @@
       "https://amap.com/*",
       "https://map.qq.com/*",
       "https://map.baidu.com/*"
-    ]
+    ],
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "{$FIREFOX_ADDON_ID}"
+      }
+    }
   }
 }
