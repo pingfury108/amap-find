@@ -147,9 +147,10 @@ function IndexSidePanel() {
       </div>
       <div className="border mt-10"></div>
       <div className="container mt-5 pt-1">
-        <div className="grid grid-cols-2">
-          <button onClick={copyTableToClipboard} className="border rounded-full w-full">复制表格</button>
-          <button onClick={clean_history} className="border rounded-full w-full">清除历史</button>
+        <div className="grid grid-cols-3 gap-4">
+          <span className="col-span-1">数量: {storageData.length}</span>
+          <button onClick={copyTableToClipboard} className="border rounded-full w-full col-span-1">复制表格</button>
+          <button onClick={clean_history} className="border rounded-full w-full col-span-1">清除历史</button>
         </div>
         <table className="mt-5 table-auto">
           <thead>
