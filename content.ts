@@ -3,8 +3,12 @@ import u from "umbrellajs";
 
 import { sendToBackground } from "@plasmohq/messaging";
 
+import { PlaceData, get_all_data, set_place, storage, storage_key } from '~storage';
+
+
+
 export const config: PlasmoCSConfig = {
-  matches: ["https://amap.com/*", "https://map.qq.com/*", "https://map.baidu.com/*"],
+  matches: ["https://amap.com/*", "https://map.qq.com/*", "https://map.baidu.com/*", "https://www.qcc.com/*"],
   all_frames: true
 }
 
@@ -68,7 +72,26 @@ function parsePlaceBaidumap() {
   return data
 }
 
-function sendPlace() {
+function parsePlaceQcc() {
+  const data = u(".maininfo");
+
+  var place_data = [];
+  data.each(function (el) {
+    const name = u(el).find(".copy-title span").nodes[0].textContent;
+    const pf = () => {
+      var p = u(u(el).find(".relate-info").find(".over-rline").nodes[1]).find(".val");
+      return p.text()
+    }
+    const phone = pf();
+    const addr = u(el).find(".max-address").text();
+    //const data = new PlaceData("", name, addr, phone)//
+    const data = { name: name, phone: phone, addr: addr };
+    place_data.push(data);
+  });
+  return place_data
+}
+
+async function sendPlace() {
   console.log(window.location.hostname);
   switch (true) {
     case /^.*\amap.com$/.test(window.location.hostname):
@@ -88,6 +111,33 @@ function sendPlace() {
       sendToBackground({
         action: "place", data: parsePlaceBaidumap()
       })
+      break;
+    case /^.*\www.qcc.com$/.test(window.location.hostname):
+      console.log("qcc")
+      const p_data = parsePlaceQcc();
+      //console.log(data)
+
+      (async () => {
+        var s_data = await get_all_data();
+        if (s_data) {
+        } else {
+          s_data = [];
+        }
+        var data = [].concat(s_data).concat(p_data);
+        data = data.filter((item, index, self) =>
+          index === self.findIndex((t) => (
+            t.name === item.name
+          ))
+        );
+        data = data.filter(p => p.phone !== '');
+        await storage.set(storage_key, data);
+        var d = await get_all_data();
+        console.log("ccc, alldata", d);
+      })()
+      /*
+      data.forEach(function (d) {
+        console.log("ccc", d);
+      })*/
       break;
   }
 }

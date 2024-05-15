@@ -1,20 +1,12 @@
 import { useMessage } from "@plasmohq/messaging/hook";
-import { Storage } from "@plasmohq/storage";
+import { useStorage } from "@plasmohq/storage/hook";
 import { useState } from "react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import "~style.css";
 
+import { PlaceData, get_all_data, set_place, storage, storage_key } from '~storage';
 
-const storage = new Storage();
-const storage_key = "place-data";
-
-class PlaceData {
-  id: String
-  name: String
-  addr: String
-  phone: String
-}
 
 function ParsePhone(phone: String) {
   if (phone) {
@@ -56,9 +48,9 @@ function History({ data }) {
     }
   }
 
-  var data_l = []
+  var data_l: Array<PlaceData> = []
   if (data) {
-    data_l = data.filter(d => d.phone !== '')
+    data_l = data.filter(d => d !== null && d.phone !== '')
   }
 
   return data_l.map((d, index: number) => (
@@ -74,29 +66,23 @@ function History({ data }) {
 }
 
 function IndexSidePanel() {
-  const [data, setData] = useState<PlaceData>(new (PlaceData));
-  const [storageData, setStorageData] = useState([]);
+  const [data, setData] = useState({});
+  const [storageData] = useStorage({
+    key: storage_key,
+    instance: storage,
+  });
+
+  /*
+    (async () => {
+      const t = await get_all_data();
+      setStorageData(t);
+    })()
+   */
 
   useMessage<string, string>(async (req, res) => {
-    var place_ss = await storage.get(storage_key);
-    console.log(place_ss, "ffff");
-    if (place_ss) {
-      //var place: Array<any> = JSON.parse(place_ss);
-      var place = [].concat(place_ss);
-      place.push(req.data);
-      var place_2 = place.filter((item, index, self) =>
-        index === self.findIndex((t) => (
-          t.name === item.name
-        ))
-      );
-      var place_3 = place_2.filter(p => p.phone !== '');
-      storage.set(storage_key, place_3);
-      setStorageData(place_3)
-    } else {
-      var place = [req.data,].filter(p => p.phone !== '');
-      storage.set(storage_key, place);
-      setStorageData(place);
-    }
+    await set_place(req.data);
+    //const place = await get_all_data();
+    //setStorageData(place)
     setData(req.data);
   })
 
@@ -137,8 +123,9 @@ function IndexSidePanel() {
 
   const clean_history = () => {
     storage.clear();
-    setStorageData([]);
+    //setStorageData([]);
   }
+
 
   return (
     <div className="container p-4 h-full text-base">
@@ -148,7 +135,7 @@ function IndexSidePanel() {
       <div className="border mt-10"></div>
       <div className="container mt-5 pt-1">
         <div className="grid grid-cols-3 gap-4">
-          <span className="col-span-1">数量: {storageData.length}</span>
+          <span className="col-span-1">数量: {[].concat(storageData).length}</span>
           <button onClick={copyTableToClipboard} className="border rounded-full w-full col-span-1">复制表格</button>
           <button onClick={clean_history} className="border rounded-full w-full col-span-1">清除历史</button>
         </div>
