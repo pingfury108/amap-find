@@ -3,14 +3,22 @@ import u from "umbrellajs";
 
 import { sendToBackground } from "@plasmohq/messaging";
 
-import { PlaceData, get_all_data, set_place, storage, storage_key } from '~storage';
+import { get_all_data, storage, storage_key } from '~storage';
 
+import init, {
+  find_by_css, find_class_by_regex, find_class_by_regex_first,
+  find_class_by_regex_last, html_to_text
+} from './wasm/pkg';
 
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://amap.com/*", "https://map.qq.com/*", "https://map.baidu.com/*", "https://www.qcc.com/*"],
+  matches: ["https://amap.com/*", "https://map.qq.com/*", "https://map.baidu.com/*", "https://www.qcc.com/*", "https://www.tianyancha.com/*"],
   all_frames: true
-}
+};
+
+(async () => {
+  init();
+})();
 
 function parsePlaceAmap() {
   const placebox = u(".placebox")
@@ -91,6 +99,26 @@ function parsePlaceQcc() {
   return place_data
 }
 
+function parsePlaceTianYanCha() {
+  var place_data = [];
+  const vvv = find_class_by_regex(document.body.innerHTML, "index_search-item-center");
+  vvv.forEach(function (item, index, array) {
+    const name = find_by_css(item, "div > div > a > span");
+    const phone_html = find_class_by_regex_first(
+      find_class_by_regex_first(
+        item,
+        "index_contact-row"),
+      "index_value");
+    const phone = find_by_css(phone_html, "span");
+    const addr_html = find_class_by_regex_last(item, "index_contact-row")
+    const addr = find_by_css(addr_html, "span:last-child")
+    const data = { name: html_to_text(name), phone: phone, addr: html_to_text(addr) };
+    place_data.push(data);
+
+  })
+  return place_data
+}
+
 async function sendPlace() {
   console.log(window.location.hostname);
   switch (true) {
@@ -115,8 +143,6 @@ async function sendPlace() {
     case /^.*\www.qcc.com$/.test(window.location.hostname):
       console.log("qcc")
       const p_data = parsePlaceQcc();
-      //console.log(data)
-
       (async () => {
         var s_data = await get_all_data();
         if (s_data) {
@@ -131,13 +157,26 @@ async function sendPlace() {
         );
         data = data.filter(p => p.phone !== '');
         await storage.set(storage_key, data);
-        var d = await get_all_data();
-        console.log("ccc, alldata", d);
       })()
-      /*
-      data.forEach(function (d) {
-        console.log("ccc", d);
-      })*/
+      break;
+    case /^.*\www.tianyancha.com$/.test(window.location.hostname):
+      console.log("tianyancha")
+      const tian_data = parsePlaceTianYanCha();
+      (async () => {
+        var s_data = await get_all_data();
+        if (s_data) {
+        } else {
+          s_data = [];
+        }
+        var data = [].concat(s_data).concat(tian_data);
+        data = data.filter((item, index, self) =>
+          index === self.findIndex((t) => (
+            t.name === item.name
+          ))
+        );
+        data = data.filter(p => p.phone !== '');
+        await storage.set(storage_key, data);
+      })()
       break;
   }
 }
