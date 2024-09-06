@@ -12,7 +12,7 @@ import init, {
 
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://amap.com/*", "https://map.qq.com/*", "https://map.baidu.com/*", "https://www.qcc.com/*", "https://www.tianyancha.com/*"],
+  matches: ["https://amap.com/*", "https://map.qq.com/*", "https://map.baidu.com/*", "https://www.qcc.com/*", "https://www.tianyancha.com/*", "https://aiqicha.baidu.com/*"],
   all_frames: true
 };
 
@@ -119,6 +119,24 @@ function parsePlaceTianYanCha() {
   return place_data
 }
 
+function parsePlaceAiQiCha() {
+  var place_data = [];
+  let  data = u(".wrap").find(".info");
+  var place_data = [];
+  data.each(function (el) {
+    const name = u(el).find(".title").find("a");
+    const pf = () => {
+      var p = u(u(el).find(".props").find(".telphone-lists-wrap").find(".first-data span span"));
+      return p.text()
+    }
+    const phone = pf();
+    const addr = u(el).find(".props").find(".legal-txt").nodes[3].textContent;
+    const data = { name: name.text(), phone: phone, addr: addr };
+    place_data.push(data);
+  });
+  return place_data
+}
+
 async function sendPlace() {
   console.log(window.location.hostname);
   switch (true) {
@@ -160,7 +178,7 @@ async function sendPlace() {
       })()
       break;
     case /^.*\www.tianyancha.com$/.test(window.location.hostname):
-      console.log("tianyancha")
+      console.log("tianyancha");
       const tian_data = parsePlaceTianYanCha();
       (async () => {
         var s_data = await get_all_data();
@@ -169,6 +187,25 @@ async function sendPlace() {
           s_data = [];
         }
         var data = [].concat(s_data).concat(tian_data);
+        data = data.filter((item, index, self) =>
+          index === self.findIndex((t) => (
+            t.name === item.name
+          ))
+        );
+        data = data.filter(p => p.phone !== '');
+        await storage.set(storage_key, data);
+      })()
+      break;
+    case /^.*\aiqicha.baidu.com$/.test(window.location.hostname):
+      console.log("aiqicha")
+      const aiqic_data = parsePlaceAiQiCha();
+      (async () => {
+        var s_data = await get_all_data();
+        if (s_data) {
+        } else {
+          s_data = [];
+        }
+        var data = [].concat(s_data).concat(aiqic_data);
         data = data.filter((item, index, self) =>
           index === self.findIndex((t) => (
             t.name === item.name

@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./**/*.{tsx,html}"],
+  content: ["./*.{tsx,html}"],
   //darkMode: "media",
   //prefix: "plasmo-",
   theme: {

@@ -139,7 +139,7 @@ function IndexSidePanel() {
           <button onClick={copyTableToClipboard} className="border rounded-full w-full col-span-1">复制表格</button>
           <button onClick={clean_history} className="border rounded-full w-full col-span-1">清除历史</button>
         </div>
-        <table className="mt-5 table-auto">
+        <table className="mt-5 table-auto w-full">
           <thead>
             <tr>
               <th className="border">名称</th>
