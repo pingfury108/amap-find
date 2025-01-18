@@ -12,7 +12,15 @@ import init, {
 
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://amap.com/*", "https://map.qq.com/*", "https://map.baidu.com/*", "https://www.qcc.com/*", "https://www.tianyancha.com/*", "https://aiqicha.baidu.com/*"],
+  matches: [
+    "https://amap.com/*",
+    "https://map.qq.com/*",
+    "https://map.baidu.com/*",
+    "https://www.qcc.com/*",
+    "https://www.tianyancha.com/*",
+    "https://aiqicha.baidu.com/*",
+    "https://www.riskbird.com/*"
+  ],
   all_frames: true
 };
 
@@ -99,6 +107,44 @@ function parsePlaceQcc() {
   return place_data
 }
 
+function parsePlaceQccAdvance() {
+  const data = u("tr.qccd-table-row.qccd-table-row-level-0");
+  var place_data = [];
+  data.each(function (el) {
+    const name = u(el).find("span.qccd-table-row-cell-ellipsis-inner").nodes[0].textContent;
+    const pf = () => {
+      var p = u(el).find("span.need-copy.has-right-tag span.val.phone-info > span:first-child");
+      return p.text()
+    }
+    let phone = pf();
+    if (!phone){
+      phone = ""
+    }
+    const addr = u(el).find("a.text-dk").text();
+    //const data = new PlaceData("", name, addr, phone)//
+    const data = { name: name, phone: phone, addr: addr };
+    place_data.push(data);
+  });
+  return place_data
+}
+
+function parsePlaceRiskbird() {
+  const data = u(".company-item");
+  var place_data = [];
+  data.each(function (el) {
+    const name = u(el).find(".company-name > a").text();
+    const pf = () => {
+      var p = u(u(el).find(".company-info .line-info").nodes[1]).find("div:first-child > span").nodes[1].textContent;
+      return p
+    }
+    const phone = pf();
+    const addr = u(el).find(".company-info .line-info:last-child .info span:last-child").text();
+    const data = { name: name, phone: phone, addr: addr };
+    place_data.push(data);
+  });
+  return place_data
+}
+
 function parsePlaceTianYanCha() {
   var place_data = [];
   const vvv = find_class_by_regex(document.body.innerHTML, "index_search-item-center");
@@ -158,7 +204,26 @@ async function sendPlace() {
         action: "place", data: parsePlaceBaidumap()
       })
       break;
-    case /^.*\www.qcc.com$/.test(window.location.hostname):
+    case /^.*\www.qcc.com\/web\/search\/advance-list.*$/.test(window.location.href):
+       console.log("qcc advance-list")
+      const qcc_advance_data = parsePlaceQccAdvance();
+      (async () => {
+        var s_data = await get_all_data();
+        if (s_data) {
+        } else {
+          s_data = [];
+        }
+        var data = [].concat(s_data).concat(qcc_advance_data);
+        data = data.filter((item, index, self) =>
+          index === self.findIndex((t) => (
+            t.name === item.name
+          ))
+        );
+        data = data.filter(p => p.phone !== '');
+        await storage.set(storage_key, data);
+      })()
+      break;
+    case /^.*\www.qcc.com\/web\/search.*$/.test(window.location.hostname.href):
       console.log("qcc")
       const p_data = parsePlaceQcc();
       (async () => {
@@ -206,6 +271,25 @@ async function sendPlace() {
           s_data = [];
         }
         var data = [].concat(s_data).concat(aiqic_data);
+        data = data.filter((item, index, self) =>
+          index === self.findIndex((t) => (
+            t.name === item.name
+          ))
+        );
+        data = data.filter(p => p.phone !== '');
+        await storage.set(storage_key, data);
+      })()
+      break;
+    case /^.*\www.riskbird.com\/search\/company.*$/.test(window.location.href):
+      console.log("riskbird")
+      const r_data = parsePlaceRiskbird();
+       (async () => {
+        var s_data = await get_all_data();
+        if (s_data) {
+        } else {
+          s_data = [];
+        }
+        var data = [].concat(s_data).concat(r_data);
         data = data.filter((item, index, self) =>
           index === self.findIndex((t) => (
             t.name === item.name

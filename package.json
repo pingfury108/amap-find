@@ -1,7 +1,7 @@
 {
   "name": "amap-find",
   "displayName": "Amap find",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A amap extension.",
   "author": "pingfury@outlook.com",
   "scripts": {
@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@plasmohq/messaging": "^0.6.2",
-    "@plasmohq/storage": "^1.10.0",
+    "@plasmohq/storage": "^1.13.0",
     "install": "^0.13.0",
-    "plasmo": "^0.89.1",
+    "plasmo": "^0.89.4",
     "react": "18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.2.0",
@@ -29,10 +29,10 @@
     "@types/react": "18.2.48",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "18.2.18",
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.1",
     "prettier": "3.2.4",
-    "tailwindcss": "^3.4.3",
+    "tailwindcss": "^3.4.17",
     "typescript": "5.3.3"
   },
   "manifest": {
